@@ -1,18 +1,18 @@
 import poster1 from "../../public/poster1.png";
 import Image from "next/image";
 import Link from "next/link";
-import fetchFromCMS from "../lib/service";
+import { fetchPostlist } from "../lib/service";
 
 export default async function Home() {
-  const portfolioItems = await fetchFromCMS();
+  const portfolioItems = await fetchPostlist();
   console.log(portfolioItems);
   return (
     <div className="grid mt-10 mx-10 gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 ">
       {portfolioItems.map((portfolioItem: any) => (
         <Link
           key={portfolioItem.id}
-          as={`/${portfolioItem.headline}`}
-          href={"/" + portfolioItem.id}
+          as={`/${portfolioItem.id}`}
+          href={"/" + portfolioItem.slag}
         >
           <div className="relative aspect-video overflow-hidden">
             <Image
