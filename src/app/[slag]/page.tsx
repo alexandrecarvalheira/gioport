@@ -1,10 +1,10 @@
 import Image from "next/image";
-import poster1 from "../../../public/poster1.png";
 import type { Metadata } from "next";
 import { fetchPost } from "@/lib/service";
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const post = await fetchPost(params.slag);
+  console;
   return { title: `Giovana Tronquini | ${post.headline}` };
 }
 
