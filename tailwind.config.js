@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       fontFamily: {
         nectarine: ["nectarine"],
+        Montserrat: ["Montserrat", "sans-serif"],
       },
     },
   },

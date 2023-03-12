@@ -16,7 +16,7 @@ export default async function Post({ params }: any) {
   console.log(content());
   return (
     <div className="flex justify-center items-center flex-col p-8 mt-4 max-w-prose mx-auto">
-      <h1 className="text-3xl font-nectarine text-red-800">{post.headline}</h1>
+      <h1 className="text-3xl font-Montserrat text-red-800">{post.headline}</h1>
       <Image
         className="my-8"
         src={
