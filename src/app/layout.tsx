@@ -25,7 +25,9 @@ export default function RootLayout({
             <Link href={"/"}>
               <button className="mr-6 hover:text-yellow-500 ">Work</button>
             </Link>
-            <button className="hover:text-yellow-500 ">Contact</button>
+            <Link href={"/contact"}>
+              <button className="hover:text-yellow-500 ">Contact</button>
+            </Link>
           </div>
         </div>
 
