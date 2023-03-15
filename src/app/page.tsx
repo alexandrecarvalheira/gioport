@@ -3,9 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { fetchPostlist } from "../lib/service";
 
+export const revalidate = 60;
+
 export default async function Home() {
   const portfolioItems = await fetchPostlist();
-  console.log(portfolioItems);
   return (
     <div className="grid my-10 mx-auto max-w-4xl gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 ">
       {portfolioItems.map((portfolioItem: any) => (
