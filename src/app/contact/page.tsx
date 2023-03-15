@@ -1,16 +1,61 @@
+"use client";
+
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useState } from "react";
+import emailjs from "@emailjs/browser";
+
+type Inputs = {
+  name: string;
+  email: string;
+  message: string;
+};
+
 export default function Contact() {
+  const [showModal, setShowModal] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
+    emailjs
+      .send(
+        process.env.NEXT_PUBLIC_SERVICE_ID as string,
+        process.env.NEXT_PUBLIC_TEMPLATE_ID as string,
+        { from_name: data.name, from_email: data.email, message: data.message },
+        process.env.NEXT_PUBLIC_PUBLIC_KEY as string
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          setShowModal(true);
+          setTimeout(() => {
+            setShowModal(false);
+            reset();
+          }, 2000);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  };
+
   return (
     <div className="relative flex min-h-screen flex-col justify-center overflow-hidden py-6 sm:py-12">
       <div className="absolute inset-0 bg-[url(/img/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
       <div className="relative mx-auto w-full max-w-md px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5  sm:px-10">
         <div className="w-full">
           <div className="text-center">
-            <h1 className="text-3xl font-semibold text-gray-900 font-Montserrat">
+            <h1 className="text-3xl font-semibold text-red-800 font-Montserrat">
               Contact Me
             </h1>
           </div>
           <div className="mt-8">
-            <form action="" className="group">
+            <form action="" className="group" onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-6">
                 <label
                   htmlFor="name"
@@ -20,11 +65,11 @@ export default function Contact() {
                 </label>
                 <input
                   type="text"
-                  name="name"
                   id="name"
                   placeholder="Your Name"
                   className="w-full rounded-md border border-gray-300 px-3 py-2.5 placeholder-gray-300 shadow shadow-gray-100 focus:border-gray-500 focus:outline-none valid:[&:not(:placeholder-shown)]:border-green-500 [&:not(:placeholder-shown):not(:focus):invalid~span]:block invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-400"
                   required
+                  {...register("name")}
                 />
               </div>
               <div className="mb-6">
@@ -36,7 +81,7 @@ export default function Contact() {
                 </label>
                 <input
                   type="email"
-                  name="email"
+                  {...register("email")}
                   id="email"
                   placeholder="you@company.com"
                   className="w-full rounded-md border border-gray-300 px-3 py-2.5 placeholder-gray-300 shadow shadow-gray-100 focus:border-gray-500 focus:outline-none valid:[&:not(:placeholder-shown)]:border-green-500 [&:not(:placeholder-shown):not(:focus):invalid~span]:block invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-400"
@@ -55,21 +100,27 @@ export default function Contact() {
                   Message*
                 </label>
                 <textarea
-                  name="email"
-                  id="email"
+                  id="message"
+                  {...register("message")}
                   placeholder="Your Message"
                   className="w-full rounded-md border border-gray-300 px-3 py-2.5 placeholder-gray-300 shadow shadow-gray-100 focus:border-gray-500 focus:outline-none valid:[&:not(:placeholder-shown)]:border-green-500 [&:not(:placeholder-shown):not(:focus):invalid~span]:block invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-400"
                   required
                 />
               </div>
 
-              <div className="mb-6">
+              <div className="mb-6 flex flex-col">
                 <button
                   type="submit"
+                  disabled={showModal}
                   className="w-full rounded-md bg-red-700 px-3 py-4 text-white focus:bg-red-800 focus:outline-none hover:bg-red-800"
                 >
                   Submit
                 </button>
+                {showModal && (
+                  <h3 className="text-green-500 mx-auto font-bold">
+                    Submitted with success
+                  </h3>
+                )}
               </div>
             </form>
           </div>
