@@ -21,7 +21,6 @@ export default function Contact() {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
     emailjs
       .send(
         process.env.NEXT_PUBLIC_SERVICE_ID as string,
